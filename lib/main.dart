@@ -35,6 +35,23 @@ class _FuturePageState extends State<FuturePage> {
   String result = '';
   late Completer completer;
 
+  void returnFG() {
+    FutureGroup<int> futureGroup = FutureGroup<int>();
+    futureGroup.add(returnOneAsync());
+    futureGroup.add(returnTwoAsync());
+    futureGroup.add(returnThreeAsync());
+    futureGroup.close();
+    futureGroup.future.then((List <int> value) {
+      int total = 0;
+      for (var element in value) {
+        total += element;
+      }
+      setState(() {
+        result = total.toString();
+      });
+    });
+  }
+
   Future getNumber() {
     completer = Completer<int>();
     calculate();
@@ -106,13 +123,15 @@ class _FuturePageState extends State<FuturePage> {
 
                 // count();
 
-                getNumber().then((value) {
-                  setState(() {
-                    result = value.toString();
-                  });
-                }).catchError((e) {
-                  result = 'An error occurred';
-                });
+                // getNumber().then((value) {
+                //   setState(() {
+                //     result = value.toString();
+                //   });
+                // }).catchError((e) {
+                //   result = 'An error occurred';
+                // });
+
+                returnFG();
               },
             ),
             const Spacer(),

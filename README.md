@@ -378,21 +378,66 @@ Ketika semua code async paralel selesai dieksekusi, maka FutureGroup akan return
     Tambahkan method ini ke dalam class _FuturePageState
 
 ```dart
+class _FuturePageState extends State<FuturePage> {
+  String result = '';
+  late Completer completer;
 
+  void returnFG() {
+    FutureGroup<int> futureGroup = FutureGroup<int>();
+    futureGroup.add(returnOneAsync());
+    futureGroup.add(returnTwoAsync());
+    futureGroup.add(returnThreeAsync());
+    futureGroup.close();
+    futureGroup.future.then((List <int> value) {
+      int total = 0;
+      for (var element in value) {
+        total += element;
+      }
+      setState(() {
+        result = value.toString();
+      });
+    });
+  }
 ```
 
 ### Langkah 2: Edit onPressed()
     Anda bisa hapus atau comment kode sebelumnya, kemudian panggil method dari langkah 1 tersebut.
 
 ```dart
+ElevatedButton(
+    child: const Text('GO!'),
+    onPressed: () {
+    // setState(() {});
+    // getData().then((value) {
+    //   result = value.body.toString().substring(0, 450);
+    //   setState(() {});
+    // }).catchError((_) {
+    //   result = 'An error occurred';
+    //   setState(() {});
+    // });
 
+    // count();
+
+    // getNumber().then((value) {
+    //   setState(() {
+    //     result = value.toString();
+    //   });
+    // }).catchError((e) {
+    //   result = 'An error occurred';
+    // });
+
+    returnFG();
+    },
+),
 ```
 
 ### Langkah 3: Run Project
     Anda akan melihat hasilnya dalam 3 detik berupa angka 6 lebih cepat dibandingkan praktikum sebelumnya menunggu sampai 9 detik.
+![Image/gif Result Practicum 4](lib/assets/images/tasks/task7.gif)
 
 > 7. Task
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 7".
+![Image/gif Result Practicum 4](lib/assets/images/tasks/task7.gif)
 
 ### Langkah 4: Ganti variabel futureGroup
     Anda dapat menggunakan FutureGroup dengan Future.wait seperti kode berikut.
