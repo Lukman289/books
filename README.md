@@ -159,31 +159,80 @@ Ada alternatif penggunaan Future yang lebih clean, mudah dibaca dan dirawat, yai
     Tambahkan tiga method berisi kode seperti berikut di dalam class _FuturePageState.
 
 ```dart
+class _FuturePageState extends State<FuturePage> {
+  String result = '';
 
+  Future<Response> getData() async {
+    const authority = 'www.googleapis.com';
+    const path = '/books/v1/volumes/OmLeEAAAQBAJ';
+    Uri url = Uri.https(authority, path);
+    return http.get(url);
+  }
+
+  Future<int> returnOneAsync() async {
+    await Future.delayed(const Duration(seconds: 3));
+    return 1;
+  }
+  
+  Future<int> returnTwoAsync() async {
+    await Future.delayed(const Duration(seconds: 3));
+    return 2;
+  }
+  
+  Future<int> returnThreeAsync() async {
+    await Future.delayed(const Duration(seconds: 3));
+    return 3;
+  }
 ```
 
 ### Langkah 2: Tambah method count()
     Lalu tambahkan lagi method ini di bawah ketiga method sebelumnya.
 
 ```dart
-
+Future count() async {
+  int total = 0;
+  total = await returnOneAsync();
+  total += await returnTwoAsync();
+  total += await returnThreeAsync();
+  setState(() {
+    result = total.toString();
+  });
+}
 ```
 
 ### Langkah 3: 
     Lakukan comment kode sebelumnya, ubah isi kode onPressed() menjadi seperti berikut.
 
 ```dart
+ElevatedButton(
+    child: const Text('GO!'),
+    onPressed: () {
+    // setState(() {});
+    // getData().then((value) {
+    //   result = value.body.toString().substring(0, 450);
+    //   setState(() {});
+    // }).catchError((_) {
+    //   result = 'An error occurred';
+    //   setState(() {});
+    // });
 
+    count();
+    },
+),
 ```
 
 ### Langkah 4: 
     Akhirnya, run atau tekan F5 jika aplikasi belum running. Maka Anda akan melihat seperti gambar berikut, hasil angka 6 akan tampil setelah delay 9 detik.
 
-![image result practicum 2]()
+![image/Gif result practicum 2](lib/assets/images/tasks/task4.gif)
 
 > 4. Task
 > - Jelaskan maksud kode langkah 1 dan 2 tersebut!
+>
+>   Pada langkah 1 kita menambahkan 3 method yang digunakan untuk menambahkan waktu tunggu selama 3 detik per method (total 9 detik) dan ketiga method tersebut mengembalikan nilai mereka masing-masing. Pada langkah 2 kita menambahkan metod count() untuk menjumlahkan nilai yang dikirimkan oleh 3 method sebelumnya.
+>
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 4".
+![image/Gif result practicum 2](lib/assets/images/tasks/task4.gif)
 
 ## Praktikum 3: Menggunakan Completer di Future
 Menggunakan Future dengan then, catchError, async, dan await mungkin sudah cukup untuk banyak kasus, tetapi ada alternatif melakukan operasi async di Dart dan Flutter yaitu dengan class Completer.
