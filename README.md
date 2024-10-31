@@ -250,35 +250,61 @@ import 'package:async/async.dart';
     Tambahkan variabel late dan method di class _FuturePageState seperti ini.
 
 ```dart
-late Completer completer;
+class _FuturePageState extends State<FuturePage> {
+  String result = '';
+  late Completer completer;
 
-Future getNumber() {
-  completer = Completer<int>();
-  calculate();
-  return completer.future;
-}
+  Future getNumber() {
+    completer = Completer<int>();
+    calculate();
+    return completer.future;
+  }
 
-Future calculate() async {
-  await Future.delayed(const Duration(seconds : 5));
-  completer.complete(42);
-}
+  Future calculate() async {
+    await Future.delayed(const Duration(seconds: 5));
+    completer.complete(42);
+  }
 ```
 
 ### Langkah 3: Ganti isi kode onPressed()
     Tambahkan kode berikut pada fungsi onPressed(). Kode sebelumnya bisa Anda comment.
 
 ```dart
+ElevatedButton(
+    child: const Text('GO!'),
+    onPressed: () {
+    // setState(() {});
+    // getData().then((value) {
+    //   result = value.body.toString().substring(0, 450);
+    //   setState(() {});
+    // }).catchError((_) {
+    //   result = 'An error occurred';
+    //   setState(() {});
+    // });
 
+    // count();
+
+    getNumber().then((value) {
+        setState(() {
+        result = value.toString();
+        });
+    });
+    },
+),
 ```
 
 ### Langkah 4: Run Project
     Terakhir, run atau tekan F5 untuk melihat hasilnya jika memang belum running. Bisa juga lakukan hot restart jika aplikasi sudah running. Maka hasilnya akan seperti gambar berikut ini. Setelah 5 detik, maka angka 42 akan tampil.
 
-![Image Result Practicum 3]()
+![Image Result Practicum 3](lib/assets/images/tasks/task5.gif)
 
 > 5. Task
 > - Jelaskan maksud kode langkah 2 tersebut!
+>
+>   Pada langkah 2 kita menambahkan 2 method baru pada main.dart. method pertama digunakan untuk mendapatkan angka, sedangkan completer digunakan untuk menyelesaikan method dengan waktu yang sudah ditentukan. Sedangkan method kedua digunakan untuk memberikan/mengirimkan angka saat method ini dipanggul/digunakan.
+>
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 5".
+![Image Result Practicum 3](lib/assets/images/tasks/task5.gif)
 
 ### Langkah 5: Ganti method calculate()
     Gantilah isi code method calculate() seperti kode berikut, atau Anda dapat membuat calculate2()
