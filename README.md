@@ -443,15 +443,42 @@ ElevatedButton(
     Anda dapat menggunakan FutureGroup dengan Future.wait seperti kode berikut.
 
 ```dart
-final futures = Future.wait<int>([
-  returnOneAsync(),
-  returnTwoAsync(),
-  returnThreeAsync(),
-]);
+void returnFG() {
+    // FutureGroup<int> futureGroup = FutureGroup<int>();
+    // futureGroup.add(returnOneAsync());
+    // futureGroup.add(returnTwoAsync());
+    // futureGroup.add(returnThreeAsync());
+    // futureGroup.close();
+    // futureGroup.future.then((List<int> value) {
+    //   int total = 0;
+    //   for (var element in value) {
+    //     total += element;
+    //   }
+    //   setState(() {
+    //     result = total.toString();
+    //   });
+    // });
+    
+    final futures = Future.wait<int>([
+      returnOneAsync(),
+      returnTwoAsync(),
+      returnThreeAsync(),
+    ]);
+    futures.then((List<int> value) {
+      int total = 0;
+      for (var element in value) {
+        total += element;
+      }
+      setState(() {
+        result = total.toString();
+      });
+    });
+}
 ```
 
 > 8. Task
 > - Jelaskan maksud perbedaan kode langkah 1 dan 4!
+>   Perbedaan dalam penggunaan FutureGroup dan Future.wait terletak pada tingkat fleksibilitas kedua metode tersebut. Pada FutureGroup kita dapat menambahkan Future/method secara dinamis, berbeda dengan Future.wait, kita tidak dapat melakukan hal yang sama seperti pada FutureGroup karena metode ini akan menambahkan Future/method saat Future.wait dijalankan. Oleh karena itu, FutureGroup dinilai lebih fleksibel dalam penambahan Future/method baru
 
 ## Praktikum 5: Menangani Respon Error pada Async Code
 Ada beberapa teknik untuk melakukan handle error pada code async. Pada praktikum ini Anda akan menggunakan 2 cara, yaitu then() callback dan pola async/await.
