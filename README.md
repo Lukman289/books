@@ -44,6 +44,7 @@ dependencies:
 ![example url](lib/assets/images/report/report_p1-3.1.png)
 > - Kemudian cobalah akses di browser URI tersebut dengan lengkap seperti ini. Jika menampilkan data JSON, maka Anda telah berhasil. Lakukan capture milik Anda dan tulis di README pada laporan praktikum. Lalu lakukan commit dengan pesan "W12: Soal 2".
 ![example url](lib/assets/images/report/report_p1-3.2.png)
+![example url](lib/assets/images/tasks/task2.png)
 
 ### Langkah 5: Tambah kode di ElevatedButton
     Tambahkan kode pada onPressed di ElevatedButton seperti berikut.
@@ -236,7 +237,7 @@ Ada beberapa teknik untuk melakukan handle error pada code async. Pada praktikum
 
     Pada bagian debug console akan melihat teks Complete seperti berikut.
 
-![Image Debug Console](lib\assets\images\report\report_p2-3.png)
+![Image Debug Console](lib/assets/images/report/report_p2-3.png)
 
 > 9. Task
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 9".
