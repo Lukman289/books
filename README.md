@@ -310,25 +310,54 @@ ElevatedButton(
     Gantilah isi code method calculate() seperti kode berikut, atau Anda dapat membuat calculate2()
 
 ```dart
-
+Future calculate() async {
+  try {
+    await Future.delayed(const Duration(seconds: 5));
+    completer.complete(42);
+  } catch (_) {
+    completer.completeError({}); 
+  }
+}
 ```
 
 ### Langkah 6: Pindah ke onPressed()
     Ganti menjadi kode seperti berikut.
 
 ```dart
-getNumber().then((value) {
-  setState(() {
-    result = value.toString();
-  });
-}).catchError((e) {
-  result = 'An error occurred';
-});
+ElevatedButton(
+    child: const Text('GO!'),
+    onPressed: () {
+    // setState(() {});
+    // getData().then((value) {
+    //   result = value.body.toString().substring(0, 450);
+    //   setState(() {});
+    // }).catchError((_) {
+    //   result = 'An error occurred';
+    //   setState(() {});
+    // });
+
+    // count();
+
+    getNumber().then((value) {
+        setState(() {
+        result = value.toString();
+        });
+    }).catchError((e) {
+        result = 'An error occurred';
+    });
+    },
+),
 ```
 
 > 6. Task
 > - Jelaskan maksud perbedaan kode langkah 2 dengan langkah 5-6 tersebut!
+>
+>   Pada langkah 5 kita membungkus kode yang sudah kita buat sebelumnya pada langkah 2 menggunakan try-catch. Penggunaan try-catch ini berfungsi untuk menghandle error yang muncul saat program sedang berjalan. Sedangkan langkah 6 memiliki fungsi yang hampir sama dengan langkah 5, tetapi pada langkah ini berguna untuk menghandle error saat button ditekan.
+>
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 6"
+<!-- task 5 and 6 have the same view -->
+![Image Result Practicum 3](lib/assets/images/tasks/task5.gif)
+
 
 ## Praktikum 4: Memanggil Future secara paralel
 Ketika Anda membutuhkan untuk menjalankan banyak Future secara bersamaan, ada sebuah class yang dapat Anda gunakan yaitu: FutureGroup.
