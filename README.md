@@ -27,7 +27,82 @@ dependencies:
 > - Tambahkan nama panggilan Anda pada **title** app sebagai identitas hasil pekerjaan Anda.
 
 ```dart
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: const FuturePage(),
+    );
+  }
+}
+
+class FuturePage extends StatefulWidget {
+  const FuturePage({super.key});
+
+  @override
+  State<FuturePage> createState() => _FuturePageState();
+}
+
+class _FuturePageState extends State<FuturePage> {
+  String result = '';
+
+  Future<Response> getData() async {
+    const authority = 'www.googleapis.com';
+    const path = '/books/v1/volumes/OmLeEAAAQBAJ';
+    Uri url = Uri.https(authority, path);
+    return http.get(url);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Back from the Future (Lukman)'),
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            const Spacer(),
+            ElevatedButton(
+              child: const Text('GO!'),
+              onPressed: () {
+                setState(() {});
+                getData().then((value) {
+                  result = value.body.toString().substring(0, 450);
+                  setState(() {});
+                }).catchError((_) {
+                  result = 'An error occurred';
+                  setState(() {});
+                });
+              },
+            ),
+            const Spacer(),
+            Text(result),
+            const Spacer(),
+            const CircularProgressIndicator(),
+            const Spacer(),
+          ],
+        ),
+      ),
+    );
+  }
+}
 ```
     Catatan: 
     Tidak ada yang spesial dengan kode di main.dart tersebut. Perlu diperhatikan di kode tersebut terdapat widget CircularProgressIndicator yang akan menampilkan animasi berputar secara terus-menerus, itu pertanda bagus bahwa aplikasi Anda responsif (tidak freeze/lag). Ketika animasi terlihat berhenti, itu berarti UI menunggu proses lain sampai selesai.
@@ -50,12 +125,28 @@ dependencies:
     Tambahkan kode pada onPressed di ElevatedButton seperti berikut.
 
 ```dart
-
+ElevatedButton(
+    child: const Text('GO!'),
+    onPressed: () {
+    setState(() {});
+    getData().then((value) {
+        result = value.body.toString().substring(0, 450);
+        setState(() {});
+    }).catchError((_) {
+        result = 'An error occurred';
+        setState(() {});
+    });
+    },
+),
 ```
 
 > 3. Task
 > - Jelaskan maksud kode langkah 5 tersebut terkait substring dan catchError!
+>
+>   substring digunakan untuk menampilkan karakter sesuai dengan parameter yang dikirimkan. pada contoh di atas menggunakan substring(0, 450) dimana nilai string akan ditampilkan mulai dari karakter pertama (0) hingga karakter terakhir (450). Sedangkan untuk catchError digunakan untuk menangani kesalahan yang mungkin terjadi saat program sedang berjalan.
+>
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 3".
+![Image task 3](lib/assets/images/tasks/task3.jpg)
 
 ## Praktikum 2: Menggunakan await/async untuk menghindari callbacks
 Ada alternatif penggunaan Future yang lebih clean, mudah dibaca dan dirawat, yaitu pola async/await. Intinya pada dua kata kunci ini:
