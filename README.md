@@ -487,27 +487,48 @@ Ada beberapa teknik untuk melakukan handle error pada code async. Pada praktikum
     Tambahkan method ini ke dalam class _FuturePageState
 
 ```dart
+class _FuturePageState extends State<FuturePage> {
+  String result = '';
+  late Completer completer;
 
+  Future returnError() async {
+    await Future.delayed(const Duration(seconds: 2));
+    throw Exception('Something terrible happened!');
+  }
 ```
 
 ### Langkah 2: ElevatedButton
     Ganti dengan kode berikut
 
 ```dart
-
+ElevatedButton(
+  child: const Text('GO!'),
+  onPressed: () {
+    returnError().then((value) {
+      setState(() {
+        result = "Success";
+      });
+    }).catchError((onError) {
+      setState(() {
+        result = onError.toString();
+      });
+    }).whenComplete(() => print('Complete'));
+  },
+),
 ```
 
 ### Langkah 3: Run Project
     Lakukan run dan klik tombol GO! maka akan menghasilkan seperti gambar berikut.
 
-![Image Result Practicum 5]()
+![Image Result Practicum 5](lib/assets/images/tasks/task9.gif)
 
     Pada bagian debug console akan melihat teks Complete seperti berikut.
 
-![Image Debug Console](lib/assets/images/report/report_p2-3.png)
+![Image Debug Console](lib/assets/images/tasks/task9-2.png)
 
 > 9. Task
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 9".
+![Image Result Practicum 5](lib/assets/images/tasks/task9.gif)
 
 ### Langkah 4: Tambah method handleError()
     Tambahkan kode ini di dalam class _FutureStatePage

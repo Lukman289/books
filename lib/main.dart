@@ -35,6 +35,11 @@ class _FuturePageState extends State<FuturePage> {
   String result = '';
   late Completer completer;
 
+  Future returnError() async {
+    await Future.delayed(const Duration(seconds: 2));
+    throw Exception('Something terrible happened!');
+  }
+
   void returnFG() {
     // FutureGroup<int> futureGroup = FutureGroup<int>();
     // futureGroup.add(returnOneAsync());
@@ -50,7 +55,7 @@ class _FuturePageState extends State<FuturePage> {
     //     result = total.toString();
     //   });
     // });
-    
+
     final futures = Future.wait<int>([
       returnOneAsync(),
       returnTwoAsync(),
@@ -146,7 +151,16 @@ class _FuturePageState extends State<FuturePage> {
                 //   result = 'An error occurred';
                 // });
 
-                returnFG();
+                // returnFG();
+                returnError().then((value) {
+                  setState(() {
+                    result = "Success";
+                  });
+                }).catchError((onError) {
+                  setState(() {
+                    result = onError.toString();
+                  });
+                }).whenComplete(() => print('Complete'));
               },
             ),
             const Spacer(),
