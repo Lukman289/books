@@ -304,6 +304,7 @@ ElevatedButton(
 >   Pada langkah 2 kita menambahkan 2 method baru pada main.dart. method pertama digunakan untuk mendapatkan angka, sedangkan completer digunakan untuk menyelesaikan method dengan waktu yang sudah ditentukan. Sedangkan method kedua digunakan untuk memberikan/mengirimkan angka saat method ini dipanggul/digunakan.
 >
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 5".
+
 ![Image Result Practicum 3](lib/assets/images/tasks/task5.gif)
 
 ### Langkah 5: Ganti method calculate()
@@ -437,6 +438,7 @@ ElevatedButton(
 
 > 7. Task
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 7".
+
 ![Image/gif Result Practicum 4](lib/assets/images/tasks/task7.gif)
 
 ### Langkah 4: Ganti variabel futureGroup
@@ -478,6 +480,7 @@ void returnFG() {
 
 > 8. Task
 > - Jelaskan maksud perbedaan kode langkah 1 dan 4!
+>
 >   Perbedaan dalam penggunaan FutureGroup dan Future.wait terletak pada tingkat fleksibilitas kedua metode tersebut. Pada FutureGroup kita dapat menambahkan Future/method secara dinamis, berbeda dengan Future.wait, kita tidak dapat melakukan hal yang sama seperti pada FutureGroup karena metode ini akan menambahkan Future/method saat Future.wait dijalankan. Oleh karena itu, FutureGroup dinilai lebih fleksibel dalam penambahan Future/method baru
 
 ## Praktikum 5: Menangani Respon Error pada Async Code
@@ -528,17 +531,43 @@ ElevatedButton(
 
 > 9. Task
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 9".
+
 ![Image Result Practicum 5](lib/assets/images/tasks/task9.gif)
 
 ### Langkah 4: Tambah method handleError()
     Tambahkan kode ini di dalam class _FutureStatePage
 
 ```dart
+class _FuturePageState extends State<FuturePage> {
+  String result = '';
+  late Completer completer;
 
+  Future handleError() async {
+    try {
+      await returnError();
+    } catch (error) {
+      setState(() {
+        result = error.toString();
+      });
+    } finally {
+      print('Complete');
+    }
+  }
 ```
 
 > 10. Task
 > - Panggil method handleError() tersebut di ElevatedButton, lalu run. Apa hasilnya? Jelaskan perbedaan kode langkah 1 dan 4!
+>
+>   Pada langkah 1 kode tersebut hanya menampilkan pesan error ketika fungsi tersebut dipanggil, sedangkan pada langkah 4 memanfaatkan try-catch untuk memastikan proses pemanggiran fungsi returnError() berjalan dengan benar dan jika terdapat error, kode pada bagian catch akan dijalankan untuk menampilkan pesan error,
+
+```dart
+ElevatedButton(
+  child: const Text('GO!'),
+  onPressed: () {
+    handleError();
+  },
+),
+```
 
 ## Praktikum 6: Menggunakan Future dengan StatefulWidget
 Seperti yang Anda telah pelajari, Stateless widget tidak dapat menyimpan informasi (state), StatefulWidget dapat mengelola variabel dan properti dengan method setState(), yang kemudian dapat ditampilkan pada UI. State adalah informasi yang dapat berubah selama life cycle widget itu berlangsung.
