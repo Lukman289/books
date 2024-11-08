@@ -873,23 +873,68 @@ Widget build(BuildContext context) {
 
 ```dart
 Future _navigateAndGetColor(BuildContext context) async {
-   color = await Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const NavigationSecond()),) ?? Colors.blue;
-   setState(() {});
-   });
+  color = await Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const NavigationSecond()),
+  ) ?? Colors.blue;
 }
 ```
 
 ### Langkah 4: Buat file baru navigation_second.dart
     Buat file baru ini di project lib Anda. Silakan jika ingin mengelompokkan view menjadi satu folder dan sesuaikan impor yang dibutuhkan.
 
-```dart
-
-```
+![image for practicum 8 step 4](lib/assets/images/report/report_p7-4.png)
 
 ### Langkah 5: Buat class NavigationSecond dengan StatefulWidget
 ```dart
+import 'package:flutter/material.dart';
 
+class NavigationSecond extends StatefulWidget {
+  const NavigationSecond({super.key});
+
+  @override
+  State<NavigationSecond> createState() => _NavigationSecondState();
+}
+
+class _NavigationSecondState extends State<NavigationSecond> {
+  @override
+  Widget build(BuildContext context) {
+    Color color;
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Navigation Second Screen Lukman'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ElevatedButton(
+              child: const Text('Red'),
+              onPressed: () {
+                color = Colors.red.shade700;
+                Navigator.pop(context, color);
+              },
+            ),
+            ElevatedButton(
+              child: const Text('Green'),
+              onPressed: () {
+                color = Colors.green.shade700;
+                Navigator.pop(context, color);
+              },
+            ),
+            ElevatedButton(
+              child: const Text('Blue'),
+              onPressed: () {
+                color = Colors.blue.shade700;
+                Navigator.pop(context, color);
+              },
+            ),
+          ],
+        )
+      ),
+    );
+  }
+}
 ```
 
 ### Langkah 6: Edit main.dart
@@ -904,6 +949,42 @@ home: const NavigationFirst(),
 
 ![Image1 Running Practicum 8]()
 ![Image2 Running Practicum 8]()
+
+> 16. Task
+> - Cobalah klik setiap button, apa yang terjadi ? Mengapa demikian ?
+>
+>   Hal tersebut bisa terjadi karena pada page pertama memanggil page kedua dimana page kedua digunakan untuk mengirimkan warna sesuai tombol yang dipilih, lalu page pertama akan mengganti value dari variabel color menjadi warna yang dipilih pada page kedua.
+>
+> - Gantilah 3 warna pada langkah 5 dengan warna favorit Anda!
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 16".
+
+```dart
+children: [
+  ElevatedButton(
+    child: const Text('Pink'),
+    onPressed: () {
+      color = const Color.fromARGB(255, 255, 0, 191);
+      Navigator.pop(context, color);
+    },
+  ),
+  ElevatedButton(
+    child: const Text('Cyan'),
+    onPressed: () {
+      color = const Color.fromARGB(255, 0, 225, 255);
+      Navigator.pop(context, color);
+    },
+  ),
+  ElevatedButton(
+    child: const Text('Purple'),
+    onPressed: () {
+      color = const Color.fromARGB(255, 255, 0, 255);
+      Navigator.pop(context, color);
+    },
+  ),
+],
+```
+
+![image for task 16](lib/assets/images/tasks/task16.gif)
 
 ## Praktikum 9: Memanfaatkan async/await dengan Widget Dialog
 Pada praktikum ini, Anda akan memanfaatkan widget AlertDialog. Anda bisa manfaatkan widget ini misal untuk memilih operasi Save, Delete, Accept, dan sebagainya.
