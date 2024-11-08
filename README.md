@@ -769,17 +769,30 @@ void initState() {
     Tambahkan kode berikut untuk menangani ketika terjadi error. Kemudian hot restart.
 
 ```dart
-else if (snapshot.connectionState == ConnectionState.done) {
-  if (snapshot.hasError) {
-     return Text('Something terrible happened!');
-  }
-  return Text(snapshot.data.toString());
-}
+ builder: (BuildContext context, AsyncSnapshot<Position> snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return const CircularProgressIndicator();
+    } else if (snapshot.connectionState == ConnectionState.done) {
+      if (snapshot.hasError) {
+        return const Text('Something terrible happened!');
+      } else {
+        return Text(snapshot.data.toString());
+      }
+    } else {
+      return const Text('');
+    }
+  },
+),
 ```
 
 > 14. Task
 > - Apakah ada perbedaan UI dengan langkah sebelumnya? Mengapa demikian?
+>
+>   Pada UI tidak menampilkan perbedaan karena hanya menambahkan kode untuk menangani error dengan menampilkan text.
+>
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 14".
+
+![image for task 14](lib/assets/images/tasks/task14.gif)
 
 ## Praktikum 8: Navigation route dengan Future Function
 Praktikum kali ini Anda akan melihat manfaat Future untuk Navigator dalam transformasi Route menjadi sebuah function async. Anda akan melakukan push screen baru dan fungsi await menunggu data untuk melakukan update warna background pada screen.
