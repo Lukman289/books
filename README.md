@@ -992,38 +992,101 @@ Pada praktikum ini, Anda akan memanfaatkan widget AlertDialog. Anda bisa manfaat
 ### Langkah 1: Buat file baru navigation_dialog.dart
     Buat file dart baru di folder lib project Anda.
 
-```dart
-
-```
+![image for practicum 9 step 1](lib/assets/images/report/report_p9-1.png)
 
 ### Langkah 2: Isi kode navigation_dialog.dart
 ```dart
+import 'package:flutter/material.dart';
 
+class NavigationDialogScreen extends StatefulWidget {
+  const NavigationDialogScreen({Key? key});
+
+  @override
+  State<NavigationDialogScreen> createState() => _NavigationDialogScreenState();
+}
+
+class _NavigationDialogScreenState extends State<NavigationDialogScreen> {
+  Color color = Colors.blue.shade700;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: color,
+      appBar: AppBar(
+        title: const Text('Navigation Dialog Screen Lukman'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          child: const Text('Change Color'),
+          onPressed: () {},
+        ),
+      ),
+    );
+  }
+}
 ```
 
 ### Langkah 3: Tambah method async
 ```dart
-
+_showColorDialog(BuildContext context) async {
+  await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: const Text('Very important question'),
+          content: const Text('Please choose a color'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Red'),
+              onPressed: () {
+                Navigator.pop(context, Colors.red.shade700);
+              },
+            ),
+            TextButton(
+              child: const Text('Green'),
+              onPressed: () {
+                Navigator.pop(context, Colors.green.shade700);
+              },
+            ),
+            TextButton(
+              child: const Text('Blue'),
+              onPressed: () {
+                Navigator.pop(context, Colors.blue.shade700);
+              },
+            ),
+          ],
+        );
+      });
+  setState(() {});
+}
 ```
 
 ### Langkah 4: Panggil method di ElevatedButton
 ```dart
-
+onPressed: () {
+  _showColorDialog(context);
+},
 ```
 
 ### Langkah 5: Edit main.dart
     Ubah properti home
 
 ```dart
-
+home: const NavigationDialogScreen(),
 ```
 
 ### Langkah 6: Run Project
     Coba ganti warna background dengan widget dialog tersebut. Jika terjadi error, silakan diperbaiki. Jika berhasil, akan tampil seperti gambar berikut.
 
-![Image Result Practicum 9]()
+![Image Result Practicum 9](lib/assets/images/report/report_p9-6.png)
 
 > 17. Task
 > - Cobalah klik setiap button, apa yang terjadi ? Mengapa demikian ?
+>
+>   Ketika klik button maka warna backgroun akan berubah, dimana hal tersebut terjadi karena method _showColorDialog() mengirimkan value untuk mengisi/mengubah value variabel color.
+>
 > - Gantilah 3 warna pada langkah 3 dengan warna favorit Anda!
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 17".
+
+![image for task 17](lib/assets/images/tasks/task17.gif)
