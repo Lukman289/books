@@ -799,18 +799,74 @@ Praktikum kali ini Anda akan melihat manfaat Future untuk Navigator dalam transf
 
 ### Langkah 1: Buat file baru navigation_first.dart
     Buatlah file baru ini di project lib Anda.
-```dart
 
-```
+![image for practicum 8 step 1](lib/assets/images/report/report_p7-1.png)
 
 ### Langkah 2: Isi kode navigation_first.dart
 ```dart
+import 'package:flutter/material.dart';
 
+class NavigationFirst extends StatefulWidget {
+  const NavigationFirst({super.key});
+
+  @override
+  State<NavigationFirst> createState() => _NavigationFirstState();
+}
+
+class _NavigationFirstState extends State<NavigationFirst> {
+  Color color = Colors.blue.shade700;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: color,
+      appBar: AppBar(
+        title: const Text('Navigation First Screen'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          child: const Text('Change Color'),
+          onPressed: () {
+            Navigator.push(
+              context,
+              _navigateAndGetColor(context),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
 ```
 
 > 15. Task
 > - Tambahkan nama panggilan Anda pada tiap properti title sebagai identitas pekerjaan Anda.
 > - Silakan ganti dengan warna tema favorit Anda.
+
+```dart
+olor color = const Color.fromARGB(255, 2, 175, 255);
+
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    backgroundColor: color,
+    appBar: AppBar(
+      title: const Text('Navigation First Screen Lukman'),
+    ),
+    body: Center(
+      child: ElevatedButton(
+        child: const Text('Change Color'),
+        onPressed: () {
+          Navigator.push(
+            context,
+            _navigateAndGetColor(context),
+          );
+        },
+      ),
+    ),
+  );
+}
+```
 
 ### Langkah 3: Tambah method di class _NavigationFirstState
     Tambahkan method ini.
