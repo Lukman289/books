@@ -603,24 +603,84 @@ flutter pub add geolocator
 ### Langkah 3: Buat file geolocation.dart
     Tambahkan file baru ini di folder lib project Anda.
 
-```dart
-
-```
+![Screenshot file](lib/assets/images/report/report_p6-3.png)
 
 ### Langkah 4: Buat StatefulWidget
     Buat class LocationScreen di dalam file geolocation.dart
 
 ```dart
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
+class LocationScreen extends StatefulWidget {
+  const LocationScreen({super.key});
+
+  @override
+  _LocationScreenState createState() => _LocationScreenState();
+}
+
+class _LocationScreenState extends State<LocationScreen> {
+  
+}
 ```
 
 ### Langkah 5: Isi kode geolocation.dart
 ```dart
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+
+class LocationScreen extends StatefulWidget {
+  const LocationScreen({super.key});
+
+  @override
+  _LocationScreenState createState() => _LocationScreenState();
+}
+
+class _LocationScreenState extends State<LocationScreen> {
+  String myPosition = '';
+
+  @override
+  void initState() {
+    super.initState();
+    getPosition().then((Position myPos) {
+      myPosition =
+          'Latitude: ${myPos.latitude.toString()} - Longitude: ${myPos.longitude.toString()}';
+      setState(() {
+        myPosition = myPosition;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Current Location Lukman'),
+      ),
+      body: Center(
+        child: Center(child: Text(myPosition)),
+      ),
+    );
+  }
+
+  Future<Position> getPosition() async {
+    await Geolocator.requestPermission();
+    await Geolocator.isLocationServiceEnabled();
+    Position? position = await Geolocator.getCurrentPosition();
+    return position;
+  }
+}
 
 ```
 
 > 11. Task
 > - Tambahkan nama panggilan Anda pada tiap properti title sebagai identitas pekerjaan Anda.
+
+```dart
+appBar: AppBar(
+  title: const Text('Current Location Lukman'),
+),
+```
 
 ### Langkah 6: Edit main.dart
     Panggil screen baru tersebut di file main Anda seperti berikut.
@@ -632,7 +692,7 @@ home: LocationScreen(),
 ### Langkah 7: Run Project
     Run project Anda di device atau emulator (bukan browser), maka akan tampil seperti berikut ini.
 
-![Image Running Project Practicum 6]()
+![Image Running Project Practicum 6](lib/assets/images/report/report_p6-7.png)
 
 ### Langkah 8: Tambahkan animasi loading
     Tambahkan widget loading seperti kode berikut. Lalu hot restart, perhatikan perubahannya.
@@ -645,6 +705,8 @@ home: LocationScreen(),
 > - Jika Anda tidak melihat animasi loading tampil, kemungkinan itu berjalan sangat cepat. Tambahkan delay pada method getPosition() dengan kode await Future.delayed(const Duration(seconds: 3));
 > - Apakah Anda mendapatkan koordinat GPS ketika run di browser? Mengapa demikian?
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 12".
+
+![image for task 12](lib/assets/images/tasks/task12.gif)
 
 ## Praktikum 7: Manajemen Future dengan FutureBuilder
 Pola ketika menerima beberapa data secara async dan melakukan update pada UI sebenarnya itu tergantung pada ketersediaan data. Secara umum fakta di Flutter, ada sebuah widget yang membantu Anda untuk memudahkan manajemen future yaitu widget FutureBuilder.
