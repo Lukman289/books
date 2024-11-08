@@ -704,6 +704,9 @@ home: LocationScreen(),
 > 12. Task
 > - Jika Anda tidak melihat animasi loading tampil, kemungkinan itu berjalan sangat cepat. Tambahkan delay pada method getPosition() dengan kode await Future.delayed(const Duration(seconds: 3));
 > - Apakah Anda mendapatkan koordinat GPS ketika run di browser? Mengapa demikian?
+>
+>   Pada browser edge saya mendapatkan koordinat, karena browser meminta izin akses lokasi yang digunakan tetapi koordinat lokasi dapat berubah-rubah ketika browser direfresh. Hal tersebut bisa terjadi karena akurasi browser menggunakan Wi-Fi dan IP Address untuk mendapatkan lokasi dan akurasi lebih rendah dari pada menggunakan GPS.
+>
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 12".
 
 ![image for task 12](lib/assets/images/tasks/task12.gif)
@@ -717,21 +720,32 @@ Anda dapat menggunakan FutureBuilder untuk manajemen future bersamaan dengan upd
     Buka file geolocation.dart kemudian ganti isi method dengan kode ini.
 
 ```dart
-
+Future<Position> getPosition() async {
+  await Geolocator.isLocationServiceEnabled();
+  await Future.delayed(const Duration(seconds: 3));
+  Position position = await Geolocator.getCurrentPosition();
+  return position;
+}
 ```
 
 ### Langkah 2: Tambah variabel
     Tambah variabel ini di class _LocationScreenState
 
 ```dart
-
+class _LocationScreenState extends State<LocationScreen> {
+  String myPosition = '';
+  Future<Position>? position;
 ```
 
 ### Langkah 3: Tambah initState()
     Tambah method ini dan set variabel position
 
 ```dart
-
+@override
+void initState() {
+  super.initState();
+  position = getPosition();
+}
 ```
 
 ### Langkah 4: Edit method build()
@@ -743,8 +757,13 @@ Anda dapat menggunakan FutureBuilder untuk manajemen future bersamaan dengan upd
 
 > 13. Task 
 > - Apakah ada perbedaan UI dengan praktikum sebelumnya? Mengapa demikian?
+>
+>   Tidak ada, karena kita menggunakan FutureBuilder() dan pada praktikum sebelumnya kita juga menggunakan Future. Dengan menggunakan FutureBuilder kita dapat membuat kode lebih rapi.
+>
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 13".
 > - Seperti yang Anda lihat, menggunakan FutureBuilder lebih efisien, clean, dan reactive dengan Future bersama UI.
+
+![image for task 13](lib/assets/images/tasks/task13.gif)
 
 ### Langkah 5: Tambah handling error
     Tambahkan kode berikut untuk menangani ketika terjadi error. Kemudian hot restart.
