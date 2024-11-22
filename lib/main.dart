@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:async/async.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,7 +23,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const NavigationDialogScreen(),
+      // home: const NavigationDialogScreen(),
+      home: const FuturePage(),
     );
   }
 }
@@ -34,9 +36,35 @@ class FuturePage extends StatefulWidget {
   State<FuturePage> createState() => _FuturePageState();
 }
 
+int appCounter = 0;
+
 class _FuturePageState extends State<FuturePage> {
   String result = '';
   late Completer completer;
+
+  @override
+  void initState() {
+    super.initState();
+    readAndWritePreference();
+  }
+
+  Future deletePreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    setState(() {
+      appCounter = 0;
+    });
+  }
+
+  Future readAndWritePreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    appCounter = prefs.getInt('appCounter') ?? 0;
+    appCounter++;
+    await prefs.setInt('appCounter', appCounter);
+    setState(() {
+      appCounter = appCounter;
+    });
+  }
 
   Future handleError() async {
     try {
@@ -138,57 +166,72 @@ class _FuturePageState extends State<FuturePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Back from the Future (Lukman)'),
+        // title: const Text('Back from the Future (Lukman)'),
+        title: const Text('Shared Preferences'),
       ),
-      body: Center(
+      body: Center (
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const Spacer(),
+            Text('You have opened the app $appCounter times.'),
             ElevatedButton(
-              child: const Text('GO!'),
               onPressed: () {
-                // setState(() {});
-                // getData().then((value) {
-                //   result = value.body.toString().substring(0, 450);
-                //   setState(() {});
-                // }).catchError((_) {
-                //   result = 'An error occurred';
-                //   setState(() {});
-                // });
-
-                // count();
-
-                // getNumber().then((value) {
-                //   setState(() {
-                //     result = value.toString();
-                //   });
-                // }).catchError((e) {
-                //   result = 'An error occurred';
-                // });
-
-                // returnFG();
-
-                // returnError().then((value) {
-                //   setState(() {
-                //     result = "Success";
-                //   });
-                // }).catchError((onError) {
-                //   setState(() {
-                //     result = onError.toString();
-                //   });
-                // }).whenComplete(() => print('Complete'));
-
-                handleError();
+                deletePreference();
               },
+              child: const Text('Reset counter'),
             ),
-            const Spacer(),
-            Text(result),
-            const Spacer(),
-            const CircularProgressIndicator(),
-            const Spacer(),
           ],
         ),
       ),
+      // body: Center(
+      //   child: Column(
+      //     children: [
+      //       const Spacer(),
+      //       ElevatedButton(
+      //         child: const Text('GO!'),
+      //         onPressed: () {
+      //           // setState(() {});
+      //           // getData().then((value) {
+      //           //   result = value.body.toString().substring(0, 450);
+      //           //   setState(() {});
+      //           // }).catchError((_) {
+      //           //   result = 'An error occurred';
+      //           //   setState(() {});
+      //           // });
+      //
+      //           // count();
+      //
+      //           // getNumber().then((value) {
+      //           //   setState(() {
+      //           //     result = value.toString();
+      //           //   });
+      //           // }).catchError((e) {
+      //           //   result = 'An error occurred';
+      //           // });
+      //
+      //           // returnFG();
+      //
+      //           // returnError().then((value) {
+      //           //   setState(() {
+      //           //     result = "Success";
+      //           //   });
+      //           // }).catchError((onError) {
+      //           //   setState(() {
+      //           //     result = onError.toString();
+      //           //   });
+      //           // }).whenComplete(() => print('Complete'));
+      //
+      //           handleError();
+      //         },
+      //       ),
+      //       const Spacer(),
+      //       Text(result),
+      //       const Spacer(),
+      //       const CircularProgressIndicator(),
+      //       const Spacer(),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }
